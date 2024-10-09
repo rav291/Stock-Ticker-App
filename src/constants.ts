@@ -40,7 +40,7 @@ const stockItems = [
   { key: 6, name: "Maruti Suzuki" },
 ];
 
-const description = `is India's largest private sector company on all major financial parameters. In 2004, Reliance Industries (RIL) 
+const description = `Reliance is India's largest private sector company on all major financial parameters. In 2004, Reliance Industries (RIL) 
    became the first Indian private sector organisation to
    be listed in the Fortune Global 500 list. The Company operates world-class manufacturing
    facilities across the country at Allahabad, Barabanki, Dahej, Hazira, Hoshiarpur, Jamnagar

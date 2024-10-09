@@ -50,23 +50,23 @@ const Search = ({ className, width, stocks, query, loading, handleChange, zIndex
           <CommandList className='ml-8 absolute w-1/3 mt-12 rounded-xl border shadow-lg border-slate-200 bg-slate-100'>
             <CommandEmpty>No results found.</CommandEmpty>
             {stocks?.length > 0 && stocks?.map((stock: Object, index: number) => (
-              <CommandItem key={index}>
-                <div className='w-full' >
+              <div onClick={() => router.push(`/stocks/${stock?.symbol}`)}>
+                <CommandItem key={index}>
                   <div className={`flex justify-between ${index != stocks.length - 1 ? "border-b-2" : ""} rounded-xl hover:bg-stone-300 px-4 py-2 w-full`}>
-                    <div className='flex flex-col items-start'>
-                      <Link href={`/stocks/${stock?.symbol}`}>
+                    <a className='flex flex-col items-start'>
+                      <span >
                         {stock?.company}
-                      </Link>
+                      </span>
                       <span className='text-blue-500'>
                         {stock?.symbol}
                       </span>
-                    </div>
+                    </a>
                     <div>
                       Stock
                     </div>
                   </div>
-                </div>
-              </CommandItem>
+                </CommandItem>
+              </div>
             ))}
           </CommandList>
         )}

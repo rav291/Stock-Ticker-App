@@ -4,7 +4,7 @@ import React from 'react'
 type Props = {}
 
 import { Expand, TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, Label, XAxis } from "recharts"
 import {
   Card,
   CardContent,
@@ -48,7 +48,6 @@ const ChartView = (props: Props) => {
           <CardTitle>
             <div className='flex justify-between items-center'>
               <h1>Area Chart - Linear</h1>
-              <Expand />
             </div>
           </CardTitle>
           <CardDescription>

@@ -1,11 +1,12 @@
 "use client"
 import { actions, services } from '@/constants'
-import { Sun } from 'lucide-react'
+import { Router, Sun } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import Search from '../search'
 import { useTheme } from 'next-themes'
 import { useStockSearch } from '@/hooks/fetchStockDetails'
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
@@ -14,6 +15,7 @@ const Navbar = (props: Props) => {
   const [query, setQuery] = useState('');
   const { data, error, loading } = useStockSearch(query);
   const [stocks, setStocks] = useState([]);
+  const router = useRouter()
 
   useEffect(() => {
     if (data) {
@@ -29,8 +31,8 @@ const Navbar = (props: Props) => {
   return (
     <div className='flex flex-col justify-between items-center'>
       <div className='flex justify-between items-center w-full gap-2  px-20 py-4'>
-        <div className="logo">
-          <span className='text-sm font-bold cursor-pointer'>Trade Brains</span>
+        <div className="logo cursor-pointer" onClick={() => router.push("/")}>
+          <span className='text-sm font-bold '>Trade Brains</span>
           <h1>PORTAL</h1>
         </div>
 
