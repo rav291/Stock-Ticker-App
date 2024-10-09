@@ -2,12 +2,12 @@ import React from 'react'
 import Search from '../search'
 import { stockItems } from '@/constants'
 import { Button } from '../ui/button'
-import useFetchStock from '@/hooks/fetchStockDetails'
+import { useStockSearch, useStockTicker } from '@/hooks/fetchStockDetails'
 
 type Props = {}
 
 const HeroSection = (props: Props) => {
-  const { data, error, loading } = useFetchStock("RELIANCE");
+  const { data, error, loading } = useStockTicker();
   console.log("abc", data);
   return (
     <div className='flex flex-col justify-center text-center mt-24'>
