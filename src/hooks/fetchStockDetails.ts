@@ -46,7 +46,7 @@ const useStockSearch = (name: string) => {
         }
         const stockData = await response.json();
         console.log("success", stockData[0]);
-        setData(stockData[0]);
+        setData(stockData);
       } catch (err: any) {
         setError(err);
       } finally {

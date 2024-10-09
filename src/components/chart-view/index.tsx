@@ -3,7 +3,7 @@ import React from 'react'
 
 type Props = {}
 
-import { TrendingUp } from "lucide-react"
+import { Expand, TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
@@ -45,7 +45,12 @@ const ChartView = (props: Props) => {
     <div>
       <Card>
         <CardHeader>
-          <CardTitle>Area Chart - Linear</CardTitle>
+          <CardTitle>
+            <div className='flex justify-between items-center'>
+              <h1>Area Chart - Linear</h1>
+              <Expand />
+            </div>
+          </CardTitle>
           <CardDescription>
             Showing total visitors for the last 6 months
           </CardDescription>
@@ -55,10 +60,10 @@ const ChartView = (props: Props) => {
             <AreaChart
               accessibilityLayer
               data={chartData}
-              // margin={{
-              //   left: 2,
-              //   right: 2,
-              // }}
+            // margin={{
+            //   left: 2,
+            //   right: 2,
+            // }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
