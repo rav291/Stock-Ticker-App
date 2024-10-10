@@ -36,7 +36,7 @@ const Navbar = (props: Props) => {
           <h1>PORTAL</h1>
         </div>
 
-        <Search placeholder="Search Stocks..." stocks={stocks} zIndex='999' query={query} loading={loading} handleChange={handleChange} width='250px' className='py-2 px-4 text-black w-[500px]' />
+        <Search placeholder="Search Stocks..." stocks={stocks} zIndex='999' query={query} loading={loading} handleChange={handleChange} width='250px' className='py-2 px-4 text-black' />
         {services.map((service, index) => {
           return (
             <div key={index} className='font-semibold hover:text-blue-400 hover:underline cursor-pointer'>

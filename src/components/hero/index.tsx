@@ -43,7 +43,7 @@ const HeroSection = (props: Props) => {
         <span className='text-blue-400'> {currentText}</span>
       </h2>
       <p className='text-lg font-medium mt-4 mb-6'>Best Stock Analysis and Fundamental Analysis Platform</p>
-      <Search placeholder="Search your favorite stocks..." zIndex='10' loading={loading} stocks={stocks} query={query} handleChange={handleChange} width='500px' className="py-4 px-6 mx-auto w-[800px]" />
+      <Search placeholder="Search your favorite stocks..." zIndex='10' loading={loading} stocks={stocks} query={query} handleChange={handleChange} width='500px' className="py-4 px-6 mx-auto" />
       <div className="trending-stocks flex justify-center gap-6 mt-8 ">
         {stockItems.map((item, index) => (
           <div key={index} className="flex items-center gap-2">
