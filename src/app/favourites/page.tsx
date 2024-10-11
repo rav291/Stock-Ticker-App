@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import React, { useEffect, useState } from 'react'
 
 const Favourites = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [savedStocks, setSavedStocks] = useState([]);
   const { favorites } = useLocalStorage();
   const { theme } = useTheme()

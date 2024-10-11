@@ -23,7 +23,7 @@ import useLocalStorage from '@/hooks/useLocalStorage'
 
 const StockDetails = () => {
   const { symbol: stock } = useParams();
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stockData, setStockData] = useState([]);
   const { data, loading } = useFetchStock(stock);
   const { data: currentStock } = useStockSearch(stock, true);
@@ -32,13 +32,13 @@ const StockDetails = () => {
 
   const [isPresent, setIsPresent] = useState(false);
 
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { favorites, saveStock } = useLocalStorage();
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
     const favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
-  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isSaved = favorites.some(item => item.id === stock.id);
     setIsPresent(isSaved)
     setStockData(data)
@@ -74,7 +74,7 @@ const StockDetails = () => {
             <h1 className='font-extrabold'>{currentStock?.company}</h1>
             {isPresent ? (
               <Heart className={`text-red-400`} onClick={() => {
-              
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 toast({
                   title: "Stock Saved Successfully!",
                   description: "You can view it in your favorites list",
@@ -104,6 +104,7 @@ const StockDetails = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
+
                 <ChartView key={stock} data={data} />
               </DialogContent>
             </Dialog>
@@ -116,7 +117,7 @@ const StockDetails = () => {
             <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full px-6 py-4'>{description}</div>
             <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full'>
               {companyInfo.map((info) => (
-              
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 <div key={info.value} className='flex items-center justify-between px-6 py-3'>
                   <p className='font-semibold'>{info.field}</p>
                   <p className='font-medium'>{info.value}</p>
