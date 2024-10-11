@@ -3,6 +3,9 @@
 ## Objective
 Develop a stock ticker application using the Next.js framework, similar to the one found on portal.tradebrains.in. This application features a stock search, detailed stock pages with SEO-friendly META tags, and a graph visualizing stock price data.
 
+### Note
+1. Some UI buttons, placeholder text, and icons have been included for aesthetic purposes. Although they lack functionality, they enhance the overall appearance of this project."
+
 ## Requirements
 - **Base Framework:** Next.js
 - **Data Source:** Stock data sourced through provided APIs.
