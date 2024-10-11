@@ -53,7 +53,11 @@ const Navbar = () => {
       <div className='flex max-xl:hidden justify-between w-full px-24 py-2 font-medium border-b-2 shadow-lg'>
         {actions.map((action, index) => {
           return (
-            <div key={index} className={`${action.name == "Favourite Stocks" && "cursor-pointer bg-stone-400"} ${theme == "dark" ? "text-white" : "text-black"} px-4 py-3 rounded-xl`}>
+            <div onClick={() => {
+              if (action.name == "Favourite Stocks") {
+                router.push("/favourites")
+              }
+            }} key={index} className={`${action.name == "Favourite Stocks" && "cursor-pointer bg-stone-400"} ${theme == "dark" ? "text-white" : "text-black"} px-4 py-3 rounded-xl`}>
               {action.name}
             </div>
           )

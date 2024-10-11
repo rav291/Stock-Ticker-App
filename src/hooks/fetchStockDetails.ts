@@ -66,6 +66,7 @@ const useStockSearch = (name: string, specificStock = undefined) => {
     };
 
     fetchStockData();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   }, [name]);
 
   return { data, error, loading };

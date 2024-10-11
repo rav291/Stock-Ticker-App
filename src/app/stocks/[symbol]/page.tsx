@@ -18,6 +18,7 @@ import { useParams } from 'next/navigation'
 import { useFetchStock, useStockSearch } from '@/hooks/fetchStockDetails'
 import { useTheme } from 'next-themes'
 import { toast } from '@/hooks/use-toast'
+import useLocalStorage from '@/hooks/useLocalStorage'
 
 
 const StockDetails = () => {
@@ -29,7 +30,17 @@ const StockDetails = () => {
   const keywords = `${stock}, stock market, investing, finance`;
   const { theme = "system" } = useTheme();
 
+  const [isPresent, setIsPresent] = useState(false);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { favorites, saveStock } = useLocalStorage();
+
   useEffect(() => {
+    const storedFavorites = localStorage.getItem("favorites");
+    const favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const isSaved = favorites.some(item => item.id === stock.id);
+    setIsPresent(isSaved)
     setStockData(data)
     console.log("selectedstock", data);
   }, [data])
@@ -61,13 +72,30 @@ const StockDetails = () => {
         <aside className='max-lg:w-full rounded-xl px-2'>
           <div className='flex items-center justify-between mb-4'>
             <h1 className='font-extrabold'>{currentStock?.company}</h1>
-            <Heart className={``} onClick={() => {
-              toast({
-                title: "Stock Saved Successfully!",
-                description: "You can view it in your favorites list",
-                variant: "destructive",
-              });
-            }} />
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars*/}
+            {isPresent ? (
+              <Heart className={`text-red-400`} onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                toast({
+                  title: "Stock Saved Successfully!",
+                  description: "You can view it in your favorites list",
+                  duration: 3000,
+                  variant: "destructive",
+                });
+              }} />
+            ) : (
+              <Heart className={``} onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                saveStock({ id: stock, symbol: currentStock?.symbol, company: currentStock?.company });
+                toast({
+                  title: "Stock Saved Successfully!",
+                  description: "You can view it in your favorites list",
+                  duration: 3000,
+                  variant: "destructive",
+                });
+              }} />
+            )}
+
           </div>
           <div className='flex justify-between items-center'>
             <p className='text-sm'>{currentStock?.symbol}</p>
@@ -89,8 +117,9 @@ const StockDetails = () => {
           <div className='flex max-lg:flex-col justify-between gap-4'>
             <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full px-6 py-4'>{description}</div>
             <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full'>
-              {companyInfo.map((info, index) => (
-                <div className='flex items-center justify-between px-6 py-3'>
+              {companyInfo.map((info) => (
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                <div key={info.value} className='flex items-center justify-between px-6 py-3'>
                   <p className='font-semibold'>{info.field}</p>
                   <p className='font-medium'>{info.value}</p>
                 </div>
@@ -102,7 +131,7 @@ const StockDetails = () => {
       <article>
         <h1 className='font-bold mb-4 text-lg px-4'>Key Metrics</h1>
         <div className={`${theme == "light" ? "text-black bg-stone-200" : "text-white bg-black"} flex flex-wrap items-center sm:justify-start justify-center gap-4 rounded-xl mb-8`}>
-          {growthMetrics.map((metric, index) => (
+          {growthMetrics.map((metric) => (
             <div key={metric.returns} className='flex max-sm:flex-col w-1/3 items-center justify-between px-6 py-3'>
               <p className='font-semibold'>{metric.name}</p>
               <p className='text-sm'>{metric.returns}</p>
