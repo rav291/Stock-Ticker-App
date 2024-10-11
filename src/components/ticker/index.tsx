@@ -1,50 +1,31 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react';
 
-type Props = {}
-const items = [
-  "Item 1: Apple",
-  "Item 2: Banana",
-  "Item 3: Cherry",
-  "Item 4: Date",
-  "Item 5: Fig",
-  "Item 6: Grape",
-];
-const Ticker = (props: Props) => {
-  const tickerRef = useRef(null);
-  const [scrollSpeed] = useState(1); // Adjust speed as needed
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!paused && tickerRef.current) {
-        tickerRef.current.scrollLeft += scrollSpeed;
-      }
-    };
-
-    const interval = setInterval(handleScroll, 30); // Adjust interval for smoother scrolling
-    return () => clearInterval(interval);
-  }, [scrollSpeed, paused]);
+const MovingTicker = () => {
+  // Sample stock data
+  const stocks = [
+    { name: 'Apple Inc.', symbol: 'AAPL', price: '150.00' },
+    { name: 'Microsoft Corp.', symbol: 'MSFT', price: '250.00' },
+    { name: 'Google LLC', symbol: 'GOOGL', price: '2800.00' },
+    { name: 'Amazon.com Inc.', symbol: 'AMZN', price: '3300.00' },
+    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
+    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
+    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
+    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
+    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
+  ];
 
   return (
-    <div
-      className="overflow-hidden whitespace-nowrap"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div
-        ref={tickerRef}
-        className="flex items-center space-x-8"
-        style={{ display: 'inline-block' }}
-      >
-        {items.map((item, index) => (
-          <div key={index} className="p-4 bg-gray-100 rounded-lg shadow">
-            {item}
+    <div className="overflow-hidden whitespace-nowrap bg-gray-100 p-2 shadow-md">
+      <div className="inline-block animate-ticker">
+        {stocks.map((stock) => (
+          <div key={stock.symbol} className="inline-block mr-10">
+            {stock.name} ({stock.symbol}): ${stock.price}
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
 
-export default Ticker
+export default MovingTicker;

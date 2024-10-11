@@ -2,12 +2,14 @@ const host = "https://portal.tradebrains.in";
 const searchAPI = (query: string) => {
   return host + `/api/assignment/search?keyword=${query}&length=10`;
 };
+
+const searchSingleStockAPI = (query: string) => {
+  return host + `/api/assignment/search?keyword=${query}&length=1`;
+};
 const stockTickerAPI = host + `/api/assignment/index/NIFTY/movers/`;
 
 const stockDetailsAPI = (stock: string) => {
-  return (
-    host + `/api/assignment/stock/${stock}/prices?days=1&type=INTRADAY&limit=1`
-  );
+  return host + `/api/assignment/stock/${stock}/prices?days=1&type=INTRADAY`;
 };
 
 const services = [
@@ -31,13 +33,23 @@ const actions = [
   { key: 9, name: "More" },
 ];
 
+const timeFrames = [
+  { id: 1, label: "1D" },
+  { id: 2, label: "1M" },
+  { id: 3, label: "3M" },
+  { id: 4, label: "6M" },
+  { id: 5, label: "1Y" },
+  { id: 6, label: "5Y" },
+  { id: 7, label: "MAX" },
+];
+
 const stockItems = [
-  { key: 1, name: "Reliance Industries" },
-  { key: 2, name: "TATA Motors" },
-  { key: 3, name: "TATA Consultancy" },
-  { key: 4, name: "HDFC Bank" },
-  { key: 5, name: "Bajaj Finance" },
-  { key: 6, name: "Maruti Suzuki" },
+  { key: 1, name: "Reliance Industries", symbol: "RELIANCE"  },
+  { key: 2, name: "TATA Motors", symbol: "TATAMOTORS" },
+  { key: 3, name: "TATA Consultancy", symbol: "TCS" },
+  { key: 4, name: "HDFC Bank", symbol: "HDFCBANK" },
+  { key: 5, name: "Bajaj Finance", symbol: "BAJFINANCE" },
+  { key: 6, name: "Maruti Suzuki", symbol: "MARUTI" },
 ];
 
 const description = `Reliance is India's largest private sector company on all major financial parameters. In 2004, Reliance Industries (RIL) 
@@ -69,7 +81,9 @@ export {
   description,
   growthMetrics,
   companyInfo,
+  timeFrames,
   searchAPI,
+  searchSingleStockAPI,
   stockTickerAPI,
   stockDetailsAPI,
 };

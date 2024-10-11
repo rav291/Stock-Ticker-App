@@ -1,10 +1,13 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-type Props = {}
+type Props = {
+  data: Array,
+  loading: boolean
+}
 
 import { Expand, TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, Label, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, Label, XAxis, YAxis } from "recharts"
 import {
   Card,
   CardContent,
@@ -19,67 +22,85 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { timeFrames } from '@/constants'
+import { Loader } from '../loader'
 export const description = "A linear area chart"
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "June", desktop: 314 },
-  { month: "June", desktop: 414 },
-  { month: "June", desktop: 514 },
-  { month: "June", desktop: 614 },
-  { month: "June", desktop: 714 },
-]
+
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  high: {
+    label: "high",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
 
-const ChartView = (props: Props) => {
+const ChartView = ({ data, loading }: Props) => {
+  let highValues = [];
+  let minY, maxY;
+  const [stockData, setStockData] = useState([]);
+  useEffect(() => {
+    if (data) {
+      highValues = data?.map((item: { high: string }) => parseFloat(item.high));
+      minY = Math.min(...highValues) * 0.95; // 5% below min value
+      maxY = Math.max(...highValues) * 1.05; // 5% above max value
+      const reversedArr = [...data].reverse();
+      setStockData(reversedArr)
+    }
+  }, [data])
+
+  const maxValue = useMemo(() => {
+    let maxHigh = -Infinity;
+    let maxChange = -Infinity;
+    let maxPercent = -Infinity;
+    data?.forEach((stock) => {
+      maxHigh = Math.max(stock.high, maxHigh);
+      maxChange = Math.max(stock.change, maxChange)
+      maxPercent = Math.max(stock.percent, maxPercent)
+    })
+
+    return { maxHigh, maxChange, maxPercent };
+  }, [data]);
+
+  console.log("maxval", maxValue)
   return (
-    <div>
+    <Loader loading={loading}>
       <Card>
         <CardHeader>
           <CardTitle>
-            <div className='flex justify-between items-center'>
-              <h1>Area Chart - Linear</h1>
+            <div className='flex font-normal justify-start gap-2 items-center'>
+              <span className='text-lg'>{`₹ ${maxValue?.maxHigh}`}</span>
+              <span className='text-[15px] text-green-600'>{`${maxValue?.maxChange}(${maxValue?.maxPercent})% 1D`}</span>
             </div>
           </CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 6 months
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
-              data={chartData}
-            // margin={{
-            //   left: 2,
-            //   right: 2,
-            // }}
+              data={stockData}
             >
+              <defs>
+                <linearGradient id="gradientColor" x1="10%" y1="10%" x2="10%" y2="100%">
+                  <stop offset="30%" style={{ stopColor: '#00ff2f', stopOpacity: 0.8 }} />
+                  <stop offset="100%" style={{ stopColor: '#ffffff', stopOpacity: 0.2 }} />
+                </linearGradient>
+              </defs>
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="high"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
+                tickFormatter={(value) => value}
               />
+              <YAxis domain={[minY, maxY]} />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="dot" hideLabel />}
               />
               <Area
-                dataKey="desktop"
+                dataKey="high"
                 type="linear"
-                fill="green"
+                fill="url(#gradientColor)"
                 fillOpacity={0.4}
                 stroke="green"
               />
@@ -87,19 +108,23 @@ const ChartView = (props: Props) => {
           </ChartContainer>
         </CardContent>
         <CardFooter>
-          <div className="flex w-full items-start gap-2 text-sm">
-            <div className="grid gap-2">
-              <div className="flex items-center gap-2 font-medium leading-none">
+          <div className="flex text-sm justify-between cursor-pointer">
+            {timeFrames.map((time) => (
+              <div key={time.id}>
+                {time.label === "1D" ? (<span className='bg-blue-500 text-white rounded-lg px-3 py-3'>
+                  {time.label}</span>) : (<span className='px-2 py-2'>{time.label}</span>)}
+              </div>
+            ))}
+            {/* <div className="flex items-center gap-2 font-medium leading-none">
                 Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
               </div>
               <div className="flex items-center gap-2 leading-none text-muted-foreground">
                 January - June 2024
-              </div>
-            </div>
+              </div> */}
           </div>
         </CardFooter>
       </Card>
-    </div>
+    </Loader>
   )
 }
 

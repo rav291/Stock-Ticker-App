@@ -1,5 +1,6 @@
+"use client"
 import Head from 'next/head'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,14 +14,36 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Expand } from 'lucide-react'
 import { companyInfo, description, growthMetrics } from '@/constants'
-
+import { useParams, useRouter } from 'next/navigation'
+import { useFetchStock, useStockSearch } from '@/hooks/fetchStockDetails'
+import { useTheme } from 'next-themes'
 
 type Props = {}
 
 const StockDetails = (props: Props) => {
+  const { symbol: stock } = useParams();
+  const [stockData, setStockData] = useState([]);
+  const { data, loading, error } = useFetchStock(stock);
+  const { data: currentStock, loading: stockLoader, error: stockError } = useStockSearch(stock, true);
+  const keywords = `${stock}, stock market, investing, finance`;
+  const { theme = "system" } = useTheme();
+
+  useEffect(() => {
+    setStockData(data)
+    console.log("selectedstock", data);
+  }, [data])
+
+  console.log("currentStock", currentStock)
+
   return (
-    <div className='flex flex-col gap-4 mt-4 px-24'>
-      <section className=''>
+    <div className={`flex flex-col gap-4 mt-4 px-24 max-xl:px-2`}>
+      <Head>
+        <title>${stock}</title>
+        <meta name="description" content={`Details about ${stock}`} />
+        <meta name="keywords" content={keywords} />
+        <meta name="robots" content="index, follow" />
+      </Head>
+      <section className='breadcrumb'>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -33,30 +56,30 @@ const StockDetails = (props: Props) => {
           </BreadcrumbList>
         </Breadcrumb>
       </section>
-      <main className='flex gap-8'>
-        <aside className='w-1/4 bg-slate-200 rounded-xl p-2'>
-          <h1 className='font-extrabold'>Reliance Industries</h1>
+      <main className={`flex max-lg:flex-col gap-8 max-sm:gap-2`}>
+        <aside className='max-lg:w-full rounded-xl px-2'>
+          <h1 className='font-extrabold'>{currentStock?.company}</h1>
           <div className='flex justify-between items-center'>
-            <p className='text-sm'>RELIANCE</p>
-            <span className='text-[14px] px-4 py-2 rounded-full'>Large Cap</span>
+            <p className='text-sm'>{currentStock?.symbol}</p>
+            <span className='text-[14px] px-2 py-1 bg-white text-blue-400 rounded-lg'>Large Cap</span>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" className='border-none mb-1'>
                   <Expand />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[800px]">
-                <ChartView />
+              <DialogContent>
+                <ChartView key={stock} data={data} />
               </DialogContent>
             </Dialog>
           </div>
-          <ChartView />
+          <ChartView key={stock} data={data} loading={loading} />
         </aside>
-        <article className='w-3/4 bg-stone-100 rounded-xl p-4'>
+        <article className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} w-3/4 max-lg:w-full rounded-xl p-4`}>
           <h1 className='font-bold mb-4'>Company Info</h1>
-          <div className='flex justify-between gap-4'>
-            <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 px-6 py-4'>{description}</div>
-            <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2'>
+          <div className='flex max-lg:flex-col justify-between gap-4'>
+            <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full px-6 py-4'>{description}</div>
+            <div className='border-2 rounded-xl border-stone-200 shadow-lg w-1/2 max-lg:w-full'>
               {companyInfo.map((info, index) => (
                 <div className='flex items-center justify-between px-6 py-3'>
                   <p className='font-semibold'>{info.field}</p>
@@ -66,15 +89,14 @@ const StockDetails = (props: Props) => {
             </div>
           </div>
         </article>
-
       </main>
       <article>
-        <h1 className='font-bold mb-4'>Key Metrics</h1>
-        <div className='flex gap-4 rounded-xl mb-8'>
+        <h1 className='font-bold mb-4 text-lg px-4'>Key Metrics</h1>
+        <div className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} flex flex-wrap items-center sm:justify-start justify-center gap-4 rounded-xl mb-8`}>
           {growthMetrics.map((metric, index) => (
-            <div className='flex w-1/3 bg-zinc-100 items-center justify-between px-6 py-3'>
+            <div className='flex max-sm:flex-col w-1/3 items-center justify-between px-6 py-3'>
               <p className='font-semibold'>{metric.name}</p>
-              <p className='font-medium'>{metric.returns}</p>
+              <p className='text-sm'>{metric.returns}</p>
             </div>
           ))}
         </div>

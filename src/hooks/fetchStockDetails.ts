@@ -1,5 +1,10 @@
 "use client";
-import { searchAPI, stockDetailsAPI, stockTickerAPI } from "@/constants";
+import {
+  searchAPI,
+  searchSingleStockAPI,
+  stockDetailsAPI,
+  stockTickerAPI,
+} from "@/constants";
 import { SetStateAction, useEffect, useState } from "react";
 
 const useFetchStock = (name: string) => {
@@ -16,8 +21,8 @@ const useFetchStock = (name: string) => {
           throw new Error("Network response was not ok");
         }
         const stockData = await response.json();
-        console.log("success", stockData[0]);
-        setData(stockData[0]);
+        console.log("success", stockData);
+        setData(stockData);
       } catch (err: any) {
         setError(err);
       } finally {
@@ -31,7 +36,7 @@ const useFetchStock = (name: string) => {
   return { data, error, loading };
 };
 
-const useStockSearch = (name: string) => {
+const useStockSearch = (name: string, specificStock = undefined) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,14 +44,16 @@ const useStockSearch = (name: string) => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const url = searchAPI(name);
+        const url = specificStock
+          ? searchSingleStockAPI(name)
+          : searchAPI(name);
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const stockData = await response.json();
-        console.log("success", stockData[0]);
-        setData(stockData);
+
+        setData(specificStock ? stockData[0] : stockData);
       } catch (err: any) {
         setError(err);
       } finally {
