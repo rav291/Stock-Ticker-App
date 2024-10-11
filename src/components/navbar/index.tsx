@@ -1,6 +1,6 @@
 "use client"
 import { actions, services } from '@/constants'
-import { Router, Sun } from 'lucide-react'
+import { Sun } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import Search from '../search'
@@ -9,12 +9,10 @@ import { useStockSearch } from '@/hooks/fetchStockDetails'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-type Props = {}
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const { theme = "system", setTheme } = useTheme();
   const [query, setQuery] = useState('');
-  const { data, error, loading } = useStockSearch(query);
+  const { data, loading } = useStockSearch(query);
   const [stocks, setStocks] = useState([]);
   const router = useRouter()
 

@@ -2,16 +2,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 type Props = {
-  data: Array,
+  data: any,
   loading: boolean
 }
-
-import { Expand, TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, Label, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,

@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Search from '../search'
 import { stockItems } from '@/constants'
 import { Button } from '../ui/button'
-import { useStockSearch, useStockTicker } from '@/hooks/fetchStockDetails'
+import { useStockSearch } from '@/hooks/fetchStockDetails'
 import { useRouter } from 'next/navigation'
 
-type Props = {}
-
 const texts = ["Trader!", "Analyst!", "Investor!"];
-const HeroSection = (props: Props) => {
+const HeroSection = () => {
   const [currentText, setCurrentText] = useState(texts[0]);
   const [index, setIndex] = useState(0);
   const router = useRouter();
@@ -24,7 +22,7 @@ const HeroSection = (props: Props) => {
   }, [index]);
 
   const [query, setQuery] = useState('');
-  const { data, error, loading } = useStockSearch(query);
+  const { data, loading } = useStockSearch(query);
   const [stocks, setStocks] = useState([]);
 
   useEffect(() => {

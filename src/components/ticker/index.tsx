@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 const MovingTicker = () => {
   const [stocks, setStocks] = useState([]);
-  const { data, loading, error } = useStockTicker();
+  const { data } = useStockTicker();
   const { theme } = useTheme();
 
   useEffect(() => {

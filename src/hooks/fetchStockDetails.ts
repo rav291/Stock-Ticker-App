@@ -5,11 +5,11 @@ import {
   stockDetailsAPI,
   stockTickerAPI,
 } from "@/constants";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useFetchStock = (name: string) => {
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,8 +23,12 @@ const useFetchStock = (name: string) => {
         const stockData = await response.json();
         console.log("success", stockData);
         setData(stockData);
-      } catch (err: any) {
-        setError(err);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message); // or whatever structure you need
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }

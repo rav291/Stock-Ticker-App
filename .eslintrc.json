@@ -1,9 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "@typescript-eslint/no-empty-object-type": "off", // Disable empty object type rule
-    "react/jsx-key": "warn", // Warn for missing key props in iterators
-    "no-unused-vars": "warn", // Warn for unused variables
-    "react/prop-types": "off" // Disable prop-types rule if you're using TypeScript
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
   }
 }

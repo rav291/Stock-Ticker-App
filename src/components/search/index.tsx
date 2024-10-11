@@ -1,19 +1,6 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 import { Input } from '../ui/input'
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command"
-import { useStockSearch } from '@/hooks/fetchStockDetails'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Loader } from '../loader'
 import { useTheme } from 'next-themes'
@@ -23,9 +10,9 @@ type Props = {
   placeholder: string,
   className: string,
   width: string,
-  stocks: Array,
+  stocks: any,
   query: string,
-  handleChange: Function,
+  handleChange: any,
   zIndex: string,
   loading: boolean
 }
@@ -33,13 +20,13 @@ type Props = {
 const Search = ({ className, width, stocks, query, loading, handleChange, zIndex, ...props }: Props) => {
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
   return (
     <div>
       <div className={`mx-auto ${width === "small" ? "max-sm:w-[160px] w-[200px]" : "max-sm:w-[300px] w-[600px]"} z-${zIndex}`}>
         <Input
-          className={`${theme == "light"? "bg-slate-100 border-slate-200" : "bg-black text-white border-2 border-stone-500"} rounded-full border shadow-lg h-full ${className}`} {...props}
+          className={`${theme == "light" ? "bg-slate-100 border-slate-200" : "bg-black text-white border-2 border-stone-500"} rounded-full border shadow-lg h-full ${className}`} {...props}
           value={query}
           onChange={(e) => {
             handleChange(e.target.value)
