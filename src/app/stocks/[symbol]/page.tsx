@@ -1,5 +1,4 @@
-// @ts-nocheck
-"use client"
+ "use client"
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import {
@@ -72,7 +71,6 @@ const StockDetails = () => {
       <main className={`flex max-lg:flex-col gap-8 max-sm:gap-2`}>
         <aside className='max-lg:w-full rounded-xl px-2'>
           <div className='flex items-center justify-between mb-4'>
-            {/* @ts-ignore */}
             <h1 className='font-extrabold'>{currentStock?.company}</h1>
             {isPresent ? (
               <Heart className={`text-red-400`} onClick={() => {
@@ -86,7 +84,6 @@ const StockDetails = () => {
               }} />
             ) : (
               <Heart className={``} onClick={() => {
-                {/* @ts-ignore */ }
                 saveStock({ id: stock, symbol: currentStock?.symbol, company: currentStock?.company });
                 toast({
                   title: "Stock Saved Successfully!",
@@ -99,7 +96,6 @@ const StockDetails = () => {
 
           </div>
           <div className='flex justify-between items-center'>
-            {/* @ts-ignore */}
             <p className='text-sm'>{currentStock?.symbol}</p>
             <Dialog>
               <DialogTrigger asChild>
@@ -108,12 +104,10 @@ const StockDetails = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                {/* @ts-ignore */}
                 <ChartView key={stock} data={data} />
               </DialogContent>
             </Dialog>
           </div>
-          {/* @ts-ignore */}
           <ChartView key={stock} data={data} loading={loading} />
         </aside>
         <article className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} w-3/4 max-lg:w-full rounded-xl p-4`}>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client"
 import { useStockTicker } from '@/hooks/fetchStockDetails';
 import { useTheme } from 'next-themes';
