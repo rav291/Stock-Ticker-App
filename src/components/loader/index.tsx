@@ -12,10 +12,10 @@ type LoaderProps = {
 export const Loader = ({ loading, children, className, noPadding }: LoaderProps) => {
   return loading ? (
     <div className={cn(className || "w-full h-full py-5 flex flex-col gap-4 justify-center items-center")}>
-      <Skeleton className="h-[125px] w-[150px] rounded-xl" />
+      <Skeleton className="h-[160px] w-[300px] rounded-xl" />
       <div className="space-y-2 space-x-2">
-        <Skeleton className="h-4 w-[150px]" />
-        <Skeleton className="h-4 w-[100px]" />
+        <Skeleton className="h-4 w-[300px]" />
+        <Skeleton className="h-4 w-[300px]" />
       </div>
     </div>
   ) : (

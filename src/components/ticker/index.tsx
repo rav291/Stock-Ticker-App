@@ -1,30 +1,51 @@
 "use client"
-import React from 'react';
+import { useStockTicker } from '@/hooks/fetchStockDetails';
+import { useTheme } from 'next-themes';
+import React, { useEffect, useState } from 'react';
 
 const MovingTicker = () => {
-  // Sample stock data
-  const stocks = [
-    { name: 'Apple Inc.', symbol: 'AAPL', price: '150.00' },
-    { name: 'Microsoft Corp.', symbol: 'MSFT', price: '250.00' },
-    { name: 'Google LLC', symbol: 'GOOGL', price: '2800.00' },
-    { name: 'Amazon.com Inc.', symbol: 'AMZN', price: '3300.00' },
-    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
-    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
-    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
-    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
-    { name: 'Tesla Inc.', symbol: 'TSLA', price: '700.00' },
-  ];
+  const [stocks, setStocks] = useState([]);
+  const { data, loading, error } = useStockTicker();
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    if (data) {
+      const updatedStocks = [];
+      data["gainers"].forEach((stock) => {
+        updatedStocks.push({
+          symbol: stock.symbol,
+          high: stock.high,
+          change: stock.change,
+          percent: stock.percent,
+        })
+      })
+      data["losers"].forEach((stock) => {
+        updatedStocks.push({
+          symbol: stock.symbol,
+          high: stock.high,
+          low: stock.low,
+          open: stock.open,
+          change: stock.change,
+          percent: stock.percent,
+        })
+      })
+
+      setStocks([...updatedStocks]);
+    }
+  }, [data]);
 
   return (
-    <div className="overflow-hidden whitespace-nowrap bg-gray-100 p-2 shadow-md">
-      <div className="inline-block animate-ticker">
-        {stocks.map((stock) => (
-          <div key={stock.symbol} className="inline-block mr-10">
-            {stock.name} ({stock.symbol}): ${stock.price}
+    <div className={`relative overflow-hidden ${theme == "dark" ? "bg-black border-b shadow-lg border-stone-100" : "bg-stone-200 border-b-2 shadow-lg"}  py-2 [--offset:20vw] [--move-initial:calc(-25%_+_var(--offset))] [--move-final:calc(-50%_+_var(--offset))] group`}>
+      <div className="w-fit flex relative transform-[translate3d(var(--move-initial),0,0)] animate-marquee [animation-play-state:running] group-hover:[animation-play-state:paused]" aria-hidden="true">
+        {stocks?.map((stock) => (
+          <div key={stock?.symbol} className="flex gap-1 mr-10">
+            <span className='font-semibold'>{stock?.symbol}&nbsp;</span>
+            <span className='font-semibold'>₹{stock?.high}&nbsp;</span>
+            <span className={`${stock?.low < stock?.open ? "text-red-500" : "text-green-500"} font-semibold`}>{stock?.change.toFixed(2)}&nbsp;({stock?.percent.toFixed(2)}%)</span>
           </div>
         ))}
       </div>
-    </div>
+    </div >
   );
 };
 

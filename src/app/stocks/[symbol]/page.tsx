@@ -12,11 +12,12 @@ import {
 import ChartView from '@/components/chart-view'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Expand } from 'lucide-react'
+import { Expand, Heart } from 'lucide-react'
 import { companyInfo, description, growthMetrics } from '@/constants'
 import { useParams, useRouter } from 'next/navigation'
 import { useFetchStock, useStockSearch } from '@/hooks/fetchStockDetails'
 import { useTheme } from 'next-themes'
+import { toast } from '@/hooks/use-toast'
 
 type Props = {}
 
@@ -58,10 +59,18 @@ const StockDetails = (props: Props) => {
       </section>
       <main className={`flex max-lg:flex-col gap-8 max-sm:gap-2`}>
         <aside className='max-lg:w-full rounded-xl px-2'>
-          <h1 className='font-extrabold'>{currentStock?.company}</h1>
+          <div className='flex items-center justify-between mb-4'>
+            <h1 className='font-extrabold'>{currentStock?.company}</h1>
+            <Heart className={``} onClick={() => {
+              toast({
+                title: "Stock Saved Successfully!",
+                description: "You can view it in your favorites list",
+                variant: "destructive",
+              });
+            }} />
+          </div>
           <div className='flex justify-between items-center'>
             <p className='text-sm'>{currentStock?.symbol}</p>
-            <span className='text-[14px] px-2 py-1 bg-white text-blue-400 rounded-lg'>Large Cap</span>
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" className='border-none mb-1'>
@@ -92,7 +101,7 @@ const StockDetails = (props: Props) => {
       </main>
       <article>
         <h1 className='font-bold mb-4 text-lg px-4'>Key Metrics</h1>
-        <div className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} flex flex-wrap items-center sm:justify-start justify-center gap-4 rounded-xl mb-8`}>
+        <div className={`${theme == "light" ? "text-black bg-stone-200" : "text-white bg-black"} flex flex-wrap items-center sm:justify-start justify-center gap-4 rounded-xl mb-8`}>
           {growthMetrics.map((metric, index) => (
             <div className='flex max-sm:flex-col w-1/3 items-center justify-between px-6 py-3'>
               <p className='font-semibold'>{metric.name}</p>

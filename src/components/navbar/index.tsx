@@ -34,7 +34,7 @@ const Navbar = (props: Props) => {
       <div className='flex justify-between items-center w-full gap-2 max-md:px-2 max-lg:px-8 lg:px-20 py-4'>
         <div className="flex max-xl:gap-16 max-md:gap-2 xl:gap-4 items-center cursor-pointer" >
           <Image src={`${theme == "dark" ? "/images/PortalLogo_dark.png" : "/images/PortalLogo_light.png"}`} alt="logo" onClick={() => router.push("/")} width={150} height={150} className='max-sm:w-[100px]' />
-          <Search placeholder="Search Stocks..." stocks={stocks} zIndex='999' query={query} loading={loading} handleChange={handleChange} width='small' className='max-sm:px-2 py-2 px-4 text-black' />
+          <Search placeholder="Search Stocks..." stocks={stocks} zIndex='999' query={query} loading={loading} handleChange={handleChange} width='small' className='max-sm:px-2 py-2 px-4' />
         </div>
 
 
@@ -55,7 +55,7 @@ const Navbar = (props: Props) => {
       <div className='flex max-xl:hidden justify-between w-full px-24 py-2 font-medium border-b-2 shadow-lg'>
         {actions.map((action, index) => {
           return (
-            <div key={index} className={` ${theme == "dark" ? "hover:bg-blue-500 text-white" : "text-black hover:bg-blue-200"} px-4 py-3 rounded-xl cursor-pointer`}>
+            <div key={index} className={`${action.name == "Favourite Stocks" && "cursor-pointer bg-stone-400"} ${theme == "dark" ? "text-white" : "text-black"} px-4 py-3 rounded-xl`}>
               {action.name}
             </div>
           )

@@ -76,16 +76,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-@keyframes ticker {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-ticker {
-  animation: ticker 40s linear infinite; /* Adjust duration for speed */
-}

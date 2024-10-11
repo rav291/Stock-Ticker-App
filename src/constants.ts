@@ -22,7 +22,7 @@ const services = [
 ];
 
 const actions = [
-  { key: 1, name: "All Stocks" },
+  { key: 1, name: "Favourite Stocks" },
   { key: 2, name: "Trending Stocks" },
   { key: 3, name: "Market News" },
   { key: 4, name: "Heat Map" },
