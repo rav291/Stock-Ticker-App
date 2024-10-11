@@ -16,7 +16,7 @@ const Favourites = () => {
       <header className='text-xl font-semibold'>Your Favourite Stocks</header>
       <section className='flex flex-wrap gap-4 items-start justify-center'>
         {favorites?.map((stock) => (
-          <div key={stock.id} className='flex bg-stone-200 p-3 rounded-xl gap-2 justify-between'>
+          <div key={stock?.id} className='flex bg-stone-200 p-3 rounded-xl gap-2 justify-between'>
             <h1>{stock?.company}</h1>
             <h1>{stock?.symbol}</h1>
           </div>
