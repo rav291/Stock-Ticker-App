@@ -58,7 +58,7 @@ const useStockSearch = (name: string, specificStock = undefined) => {
         const stockData = await response.json();
 
         setData(specificStock ? stockData[0] : stockData);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
       } catch (err: any) {
         setError(err);
       } finally {
@@ -67,7 +67,6 @@ const useStockSearch = (name: string, specificStock = undefined) => {
     };
 
     fetchStockData();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   }, [name]);
 
   return { data, error, loading };
@@ -89,7 +88,7 @@ const useStockTicker = () => {
         const stockData = await response.json();
         console.log("success", stockData);
         setData(stockData);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
       } catch (err: any) {
         setError(err);
       } finally {

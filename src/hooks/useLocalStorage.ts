@@ -13,10 +13,8 @@ const useLocalStorage = () => {
   }, []);
 
   // Save stock to local storage
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const saveStock = (stock) => {
     if (!stock || !stock.id) return; // Ensure valid stock
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setFavorites((prev) => {
       // Check for duplicates
       const updatedFavorites = prev.some((fav) => fav.id === stock.id)
