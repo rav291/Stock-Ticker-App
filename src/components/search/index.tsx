@@ -10,8 +10,10 @@ type Props = {
   placeholder: string,
   className: string,
   width: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   stocks: any,
   query: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleChange: any,
   zIndex: string,
   loading: boolean
@@ -43,8 +45,9 @@ const Search = ({ className, width, stocks, query, loading, handleChange, zIndex
           ) : (
             <div
               className={`${theme == "light" ? "border-slate-200 bg-slate-100" : "bg-black"} h-[300px] overflow-scroll absolute ${width === "small" ? "max-sm:w-[160px] w-[200px]" : "max-sm:w-[300px] w-[600px]"} mt-2 rounded-xl border shadow-lg`}>
+              {/* eslint-disable-next-line @typescript-eslint/no-unused-vars*/}
               {stocks.map((stock: Object, index: number) => (
-                <Loader loading={loading}>
+                <Loader key={index} loading={loading}>
                   <div onClick={() => {
                     router.push(`/stocks/${stock?.symbol}`)
                     setOpen(false);

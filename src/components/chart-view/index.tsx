@@ -1,8 +1,8 @@
 "use client"
 import React, { useEffect, useMemo, useState } from 'react'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   data: any,
   loading: boolean
 }
