@@ -5,10 +5,11 @@ Develop a stock ticker application using the Next.js framework, similar to the o
 
 ### Note
 1. Some UI buttons, placeholder text, and icons have been included for aesthetic purposes. Although they lack functionality, they enhance the overall appearance of this project."
+2. If the UI seems distorted, click on the dark mode toggle button on the top right corner. 
 
 ## Requirements
 - **Base Framework:** Next.js
-- **Data Source:** Stock data sourced through provided APIs.
+- **Data Source:** Display stock data sourced through provided APIs.
 
 ## Features
 1. **Stock Search Functionality:**
@@ -28,9 +29,17 @@ Develop a stock ticker application using the Next.js framework, similar to the o
    - Fetches price data via the Stock Prices API and displays it on the graph.
 
 4. **Data Fetching and Integration:**
-   - Utilizes Next.js data fetching methods (`getServerSideProps` or `getStaticProps`) to pre-render stock details.
    - Includes error handling for API calls (e.g., invalid stock symbols).
-
+5. **Localstorage support**
+   - Implement a feature that allows users to save their favorite stocks to local storage for convenient and quick access.
+6. **Skeleton Loader**
+   - Implemented a skeleton loader by creating a higher-order component (HOC) that wraps around slower-loading components. This HOC displays a placeholder while the actual content is being fetched, improving the user experience by providing visual feedback during loading times.
+7. **Favourite Stocks Page**
+   -  This page allows users to view their saved favorite stocks in a dedicated section.
+   -  Created a custom hook that encapsulates the logic for interacting with local storage. This hook manages the state of favorite stocks  and ensures that data persists even after the page reloads.
+8. **Rolling Ticker**
+   -  Implement a dynamic rolling ticker bar at the top of the page using the ticker component, similar to the functionality featured on portal.tradebrains.in.
+   -  This ticker will continuously display real-time stock information, providing users with quick and convenient access to the latest updates
 ## APIs
 1. **Search API:**
    - `GET /api/assignment/search?keyword=RELIANCE&length=10`
@@ -49,7 +58,7 @@ Develop a stock ticker application using the Next.js framework, similar to the o
 ### 1. Stock Search Component
 - A search input field that fetches stock data as the user types.
 - Displays a list of suggestions based on user input.
-- Uses Next.js `Link` or `useRouter` for client-side navigation to stock details.
+- Uses Next.js `useRouter` for client-side navigation to stock details.
 
 ### 2. Stock Details Page
 - Dynamic route setup using `[symbol].js` in the `pages/stock` directory.
@@ -61,12 +70,12 @@ Develop a stock ticker application using the Next.js framework, similar to the o
 - Fetches price data from the Stock Prices API and maps it to the graph.
 
 ### 4. Data Fetching
-- `getServerSideProps` is used for server-side rendering of stock details, ensuring fresh data on each request.
 - Error handling includes checks for valid stock symbols and user-friendly error messages.
+- Added state returned by the custom hook as dependency in useEffect to ensure the component receives fresh data.
 
 ## Technical Specifications
 - **Frontend:** Next.js (React)
-- **Graph Library:** Recharts or Chart.js (choose one)
+- **Graph Library:** Recharts by ShadCN
 - **Styling:** ShadCN, Tailwind CSS.
 
 ## Additional Notes
