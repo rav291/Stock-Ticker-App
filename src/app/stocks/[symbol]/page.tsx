@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
