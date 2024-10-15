@@ -1,4 +1,4 @@
- "use client"
+"use client"
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import {
@@ -12,7 +12,7 @@ import {
 import ChartView from '@/components/chart-view'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Expand, Heart } from 'lucide-react'
+import { Expand, Heart, X } from 'lucide-react'
 import { companyInfo, description, growthMetrics } from '@/constants'
 import { useParams } from 'next/navigation'
 import { useFetchStock, useStockSearch } from '@/hooks/fetchStockDetails'
@@ -25,15 +25,19 @@ const StockDetails = () => {
   const { symbol: stock } = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stockData, setStockData] = useState([]);
-  const { data, loading } = useFetchStock(stock);
+  const { data, loading } = useFetchStock(stock, "days", "INTRADAY");
   const { data: currentStock } = useStockSearch(stock, true);
   const keywords = `${stock}, stock market, investing, finance`;
-  const { theme = "system" } = useTheme();
+  const { theme } = useTheme();
 
   const [isPresent, setIsPresent] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { favorites, saveStock } = useLocalStorage();
+  const { favorites, saveStock, removeStock } = useLocalStorage();
+
+  const handleStockDataChange = (data) => {
+    setStockData(data);
+  }
 
   useEffect(() => {
     const storedFavorites = localStorage.getItem("favorites");
@@ -46,6 +50,10 @@ const StockDetails = () => {
   }, [data])
 
   console.log("currentStock", currentStock)
+
+  useEffect(() => {
+    console.log("isPresent", isPresent);
+  }, [isPresent])
 
   return (
     <div className={`flex flex-col gap-4 mt-4 px-24 max-xl:px-2`}>
@@ -73,17 +81,19 @@ const StockDetails = () => {
           <div className='flex items-center justify-between mb-4'>
             <h1 className='font-extrabold'>{currentStock?.company}</h1>
             {isPresent ? (
-              <Heart className={`text-red-400`} onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              <X className={`text-red-400`} onClick={() => {
+                setIsPresent(false);
+                removeStock(stock);
                 toast({
-                  title: "Stock Saved Successfully!",
+                  title: "Stock Removed Successfully!",
                   description: "You can view it in your favorites list",
                   duration: 3000,
-                  variant: "destructive",
                 });
-              }} />
+              }}
+              />
             ) : (
               <Heart className={``} onClick={() => {
+                setIsPresent(true);
                 saveStock({ id: stock, symbol: currentStock?.symbol, company: currentStock?.company });
                 toast({
                   title: "Stock Saved Successfully!",
@@ -105,11 +115,11 @@ const StockDetails = () => {
               </DialogTrigger>
               <DialogContent>
 
-                <ChartView key={stock} data={data} />
+                <ChartView key={stock} data={data} stock={stock} />
               </DialogContent>
             </Dialog>
           </div>
-          <ChartView key={stock} data={data} loading={loading} />
+          <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} />
         </aside>
         <article className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} w-3/4 max-lg:w-full rounded-xl p-4`}>
           <h1 className='font-bold mb-4'>Company Info</h1>

@@ -8,8 +8,8 @@ const searchSingleStockAPI = (query: string) => {
 };
 const stockTickerAPI = host + `/api/assignment/index/NIFTY/movers/`;
 
-const stockDetailsAPI = (stock: string) => {
-  return host + `/api/assignment/stock/${stock}/prices?days=1&type=INTRADAY`;
+const stockDetailsAPI = (stock: string, time:string, type:string) => {
+  return host + `/api/assignment/stock/${stock}/prices?${time}=1&type=${type}`;
 };
 
 const services = [
@@ -34,13 +34,13 @@ const actions = [
 ];
 
 const timeFrames = [
-  { id: 1, label: "1D" },
-  { id: 2, label: "1M" },
-  { id: 3, label: "3M" },
-  { id: 4, label: "6M" },
-  { id: 5, label: "1Y" },
-  { id: 6, label: "5Y" },
-  { id: 7, label: "MAX" },
+  { id: 1, label: "1D", value: "days", type: "INTRADAY" },
+  { id: 2, label: "1W", value: "weeks", type: "EOD" },
+  { id: 3, label: "1M",  value: "1month" },
+  { id: 4, label: "6M",  value: "6month" },
+  { id: 5, label: "1Y",  value: "1yr" },
+  { id: 6, label: "5Y",  value: "5yr" },
+  { id: 7, label: "MAX",  value: "max" },
 ];
 
 const stockItems = [

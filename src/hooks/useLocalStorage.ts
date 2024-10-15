@@ -13,11 +13,8 @@ const useLocalStorage = () => {
     }
   }, []);
 
-  // Save stock to local storage
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const saveStock = (stock) => {
     if (!stock || !stock.id) return; // Ensure valid stock
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setFavorites((prev) => {
       // Check for duplicates
       const updatedFavorites = prev.some((fav) => fav.id === stock.id)
@@ -28,6 +25,20 @@ const useLocalStorage = () => {
       return updatedFavorites;
     });
   };
-  return { favorites, saveStock };
+
+  const removeStock = (id) => {
+    if (!id) return; // Ensure valid stock
+    setFavorites((prev) => {
+      const storedFavorites = JSON.parse(localStorage.getItem("favorites"));
+      console.log("storedFavorites", storedFavorites)
+
+      const updatedFavorites = storedFavorites.filter((item) => item.id != id);
+      console.log("updatedFavorites", updatedFavorites)
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      setFavorites(updatedFavorites);
+      // return updatedFavorites;
+    });
+  };
+  return { favorites, saveStock, removeStock };
 };
 export default useLocalStorage;

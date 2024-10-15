@@ -3,7 +3,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 type Props = {
   data: any,
-  loading: boolean
+  loading: boolean,
+  stock: string,
+  handleStockDataChange: any
 }
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
@@ -19,8 +21,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { timeFrames } from '@/constants'
+import { stockDetailsAPI, timeFrames } from '@/constants'
 import { Loader } from '../loader'
+import { useFetchStock } from '@/hooks/fetchStockDetails'
+import { fetchCurrentStockData } from '@/lib/utils'
 export const description = "A linear area chart"
 
 const chartConfig = {
@@ -30,10 +34,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-const ChartView = ({ data, loading }: Props) => {
+const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
   let highValues = [];
   let minY, maxY;
   const [stockData, setStockData] = useState([]);
+  const [timeSelected, setTimeSelected] = useState(timeFrames[0]);
+
   useEffect(() => {
     if (data) {
       highValues = data?.map((item: { high: string }) => parseFloat(item.high));
@@ -43,6 +49,11 @@ const ChartView = ({ data, loading }: Props) => {
       setStockData(reversedArr)
     }
   }, [data])
+
+  useEffect(() => {
+    const data = fetchCurrentStockData(stock, timeSelected.value, timeSelected.type)
+    handleStockDataChange(data);
+  }, [timeSelected])
 
   const maxValue = useMemo(() => {
     let maxHigh = -Infinity;
@@ -57,7 +68,11 @@ const ChartView = ({ data, loading }: Props) => {
     return { maxHigh, maxChange, maxPercent };
   }, [data]);
 
-  console.log("maxval", maxValue)
+  const handleTimeChange = (time) => {
+    console.log("timechange data", data);
+    setTimeSelected(time);
+  }
+
   return (
     <Loader loading={loading}>
       <Card>
@@ -107,9 +122,8 @@ const ChartView = ({ data, loading }: Props) => {
         <CardFooter>
           <div className="flex text-sm justify-between cursor-pointer">
             {timeFrames.map((time) => (
-              <div key={time.id}>
-                {time.label === "1D" ? (<span className='bg-blue-500 text-white rounded-lg px-3 py-3'>
-                  {time.label}</span>) : (<span className='px-2 py-2'>{time.label}</span>)}
+              <div onClick={(time) => handleTimeChange(time)} key={time.id}>
+                <span className={`${timeSelected && "bg-blue"} px-2 py-2`}>{time.label}</span>
               </div>
             ))}
             {/* <div className="flex items-center gap-2 font-medium leading-none">

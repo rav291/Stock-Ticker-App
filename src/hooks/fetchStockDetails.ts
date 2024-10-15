@@ -5,9 +5,10 @@ import {
   stockDetailsAPI,
   stockTickerAPI,
 } from "@/constants";
+import { fetchCurrentStockData } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-const useFetchStock = (name: string) => {
+const useFetchStock = (name: string, time:string, type:string) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -15,13 +16,7 @@ const useFetchStock = (name: string) => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const url = stockDetailsAPI(name);
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const stockData = await response.json();
-        console.log("success", stockData);
+        const stockData = fetchCurrentStockData(name, time, type)
         setData(stockData);
       } catch (err: unknown) {
         if (err instanceof Error) {

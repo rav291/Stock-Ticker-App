@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 const Navbar = () => {
-  const { theme = "system", setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [query, setQuery] = useState('');
   const { data, loading } = useStockSearch(query);
   const [stocks, setStocks] = useState([]);
