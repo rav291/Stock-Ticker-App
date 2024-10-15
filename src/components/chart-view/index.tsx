@@ -21,9 +21,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { stockDetailsAPI, timeFrames } from '@/constants'
+import { timeFrames } from '@/constants'
 import { Loader } from '../loader'
-import { useFetchStock } from '@/hooks/fetchStockDetails'
 import { fetchCurrentStockData } from '@/lib/utils'
 export const description = "A linear area chart"
 
@@ -41,7 +40,8 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
   const [timeSelected, setTimeSelected] = useState(timeFrames[0]);
 
   useEffect(() => {
-    if (data) {
+    if (Array.isArray(data) && data.length > 0) {
+      console.log("datadata", data);
       highValues = data?.map((item: { high: string }) => parseFloat(item.high));
       minY = Math.min(...highValues) * 0.95; // 5% below min value
       maxY = Math.max(...highValues) * 1.05; // 5% above max value
@@ -51,26 +51,32 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
   }, [data])
 
   useEffect(() => {
-    const data = fetchCurrentStockData(stock, timeSelected.value, timeSelected.type)
-    handleStockDataChange(data);
+    const fetchUpdatedData = async () => {
+      const data = await fetchCurrentStockData(stock, timeSelected.value, timeSelected.type);
+      handleStockDataChange(data);
+      console.log("received", data);
+    }
+
+    fetchUpdatedData();
+
   }, [timeSelected])
 
   const maxValue = useMemo(() => {
     let maxHigh = -Infinity;
     let maxChange = -Infinity;
     let maxPercent = -Infinity;
-    data?.forEach((stock) => {
+    stockData?.forEach((stock) => {
       maxHigh = Math.max(stock.high, maxHigh);
       maxChange = Math.max(stock.change, maxChange)
       maxPercent = Math.max(stock.percent, maxPercent)
     })
 
     return { maxHigh, maxChange, maxPercent };
-  }, [data]);
+  }, [data, timeSelected]);
 
   const handleTimeChange = (time) => {
-    console.log("timechange data", data);
     setTimeSelected(time);
+    localStorage.setItem("time", time.id);
   }
 
   return (
@@ -88,7 +94,7 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
-              data={stockData}
+              data={data}
             >
               <defs>
                 <linearGradient id="gradientColor" x1="10%" y1="10%" x2="10%" y2="100%">
@@ -122,7 +128,7 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
         <CardFooter>
           <div className="flex text-sm justify-between cursor-pointer">
             {timeFrames.map((time) => (
-              <div onClick={(time) => handleTimeChange(time)} key={time.id}>
+              <div onClick={() => handleTimeChange(time)} key={time.id}>
                 <span className={`${timeSelected && "bg-blue"} px-2 py-2`}>{time.label}</span>
               </div>
             ))}

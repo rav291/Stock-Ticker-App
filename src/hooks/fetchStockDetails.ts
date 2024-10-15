@@ -2,7 +2,6 @@
 import {
   searchAPI,
   searchSingleStockAPI,
-  stockDetailsAPI,
   stockTickerAPI,
 } from "@/constants";
 import { fetchCurrentStockData } from "@/lib/utils";
@@ -16,7 +15,7 @@ const useFetchStock = (name: string, time:string, type:string) => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const stockData = fetchCurrentStockData(name, time, type)
+        const stockData = await fetchCurrentStockData(name, time, type)
         setData(stockData);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -32,7 +31,7 @@ const useFetchStock = (name: string, time:string, type:string) => {
     fetchStockData();
   }, [name]);
 
-  return { data, error, loading };
+  return { data, setData, error, loading };
 };
 
 const useStockSearch = (name: string, specificStock = undefined) => {
@@ -64,7 +63,7 @@ const useStockSearch = (name: string, specificStock = undefined) => {
     fetchStockData();
   }, [name]);
 
-  return { data, error, loading };
+  return { data, setData, error, loading };
 };
 
 const useStockTicker = () => {
@@ -94,7 +93,7 @@ const useStockTicker = () => {
     fetchStockData();
   }, []);
 
-  return { data, error, loading };
+  return { data, error, setData, loading };
 };
 
 export { useFetchStock, useStockSearch, useStockTicker };

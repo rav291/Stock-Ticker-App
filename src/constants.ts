@@ -8,8 +8,12 @@ const searchSingleStockAPI = (query: string) => {
 };
 const stockTickerAPI = host + `/api/assignment/index/NIFTY/movers/`;
 
-const stockDetailsAPI = (stock: string, time:string, type:string) => {
-  return host + `/api/assignment/stock/${stock}/prices?${time}=1&type=${type}`;
+const stockDetailsAPI = (stock: string, time: string, type: string) => {
+  console.log("namesake", stock);
+  if (stock && time && type)
+    return (
+      host + `/api/assignment/stock/${stock}/prices?${time}=1&type=${type}`
+    );
 };
 
 const services = [
@@ -36,15 +40,15 @@ const actions = [
 const timeFrames = [
   { id: 1, label: "1D", value: "days", type: "INTRADAY" },
   { id: 2, label: "1W", value: "weeks", type: "EOD" },
-  { id: 3, label: "1M",  value: "1month" },
-  { id: 4, label: "6M",  value: "6month" },
-  { id: 5, label: "1Y",  value: "1yr" },
-  { id: 6, label: "5Y",  value: "5yr" },
-  { id: 7, label: "MAX",  value: "max" },
+  // { id: 3, label: "1M", value: "months", type: "EOD" },
+  // { id: 4, label: "6M", value: "6month", type: "EOD" },
+  // { id: 5, label: "1Y", value: "1yr", type: "EOD" },
+  // { id: 6, label: "5Y", value: "5yr", type: "EOD" },
+  // { id: 7, label: "MAX", value: "max", type: "EOD" },
 ];
 
 const stockItems = [
-  { key: 1, name: "Reliance Industries", symbol: "RELIANCE"  },
+  { key: 1, name: "Reliance Industries", symbol: "RELIANCE" },
   { key: 2, name: "TATA Motors", symbol: "TATAMOTORS" },
   { key: 3, name: "TATA Consultancy", symbol: "TCS" },
   { key: 4, name: "HDFC Bank", symbol: "HDFCBANK" },

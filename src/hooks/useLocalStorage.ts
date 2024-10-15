@@ -28,7 +28,7 @@ const useLocalStorage = () => {
 
   const removeStock = (id) => {
     if (!id) return; // Ensure valid stock
-    setFavorites((prev) => {
+    setFavorites(() => {
       const storedFavorites = JSON.parse(localStorage.getItem("favorites"));
       console.log("storedFavorites", storedFavorites)
 

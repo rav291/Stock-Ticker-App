@@ -25,7 +25,7 @@ const StockDetails = () => {
   const { symbol: stock } = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stockData, setStockData] = useState([]);
-  const { data, loading } = useFetchStock(stock, "days", "INTRADAY");
+  const { data, setData, loading } = useFetchStock(stock, "days", "INTRADAY");
   const { data: currentStock } = useStockSearch(stock, true);
   const keywords = `${stock}, stock market, investing, finance`;
   const { theme } = useTheme();
@@ -36,7 +36,7 @@ const StockDetails = () => {
   const { favorites, saveStock, removeStock } = useLocalStorage();
 
   const handleStockDataChange = (data) => {
-    setStockData(data);
+    setData(data);
   }
 
   useEffect(() => {
@@ -114,12 +114,11 @@ const StockDetails = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-
-                <ChartView key={stock} data={data} stock={stock} />
+                <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock} />
               </DialogContent>
             </Dialog>
           </div>
-          <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} />
+          <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock}/>
         </aside>
         <article className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} w-3/4 max-lg:w-full rounded-xl p-4`}>
           <h1 className='font-bold mb-4'>Company Info</h1>

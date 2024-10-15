@@ -1,9 +1,9 @@
 import { stockDetailsAPI } from "@/constants";
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 const fetchCurrentStockData = async (name, time, type) => {
@@ -15,7 +15,18 @@ const fetchCurrentStockData = async (name, time, type) => {
   const stockData = await response.json();
   console.log("success", stockData);
 
-  return stockData;
-}
+  const combinedData = [];
+  if (type == "EOD") {
+    console.log("datastock", stockData);
+    stockData?.forEach((data) => {
+      console.log("dataitem", data);
+      combinedData.push(data);
+    });
+    console.log("combineddata", combinedData);
+    return combinedData;
+  }
 
-export {fetchCurrentStockData};
+  return stockData;
+};
+
+export { fetchCurrentStockData };
