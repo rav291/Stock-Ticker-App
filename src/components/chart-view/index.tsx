@@ -5,7 +5,9 @@ type Props = {
   data: any,
   loading: boolean,
   stock: string,
-  handleStockDataChange: any
+  handleStockDataChange: any,
+  timeSelected: Object,
+  setTimeSelected: any
 }
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
@@ -33,11 +35,10 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
+const ChartView = ({ data, loading, timeSelected, setTimeSelected, stock, handleStockDataChange }: Props) => {
   let highValues = [];
   let minY, maxY;
   const [stockData, setStockData] = useState([]);
-  const [timeSelected, setTimeSelected] = useState(timeFrames[0]);
 
   useEffect(() => {
     if (Array.isArray(data) && data.length > 0) {
@@ -61,7 +62,7 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
 
   }, [timeSelected])
 
-  const maxValue = useMemo(() => {
+  const { maxHigh, maxChange, maxPercent } = useMemo(() => {
     let maxHigh = -Infinity;
     let maxChange = -Infinity;
     let maxPercent = -Infinity;
@@ -72,11 +73,10 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
     })
 
     return { maxHigh, maxChange, maxPercent };
-  }, [data, timeSelected]);
+  }, [stockData, timeSelected])
 
   const handleTimeChange = (time) => {
     setTimeSelected(time);
-    localStorage.setItem("time", time.id);
   }
 
   return (
@@ -85,8 +85,9 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
         <CardHeader>
           <CardTitle>
             <div className='flex font-normal justify-start gap-2 items-center'>
-              <span className='text-lg'>{`₹ ${maxValue?.maxHigh}`}</span>
-              <span className='text-[15px] text-green-600'>{`${maxValue?.maxChange}(${maxValue?.maxPercent})% 1D`}</span>
+              <span className='text-lg'>{`₹ ${maxHigh}`}</span>
+              <span className={`${timeSelected.id == 2 && "hidden"} text-[15px] text-green-600`}>
+                {`${maxChange}(${maxPercent})% 1D`}</span>
             </div>
           </CardTitle>
         </CardHeader>
@@ -129,15 +130,9 @@ const ChartView = ({ data, loading, stock, handleStockDataChange }: Props) => {
           <div className="flex text-sm justify-between cursor-pointer">
             {timeFrames.map((time) => (
               <div onClick={() => handleTimeChange(time)} key={time.id}>
-                <span className={`${timeSelected && "bg-blue"} px-2 py-2`}>{time.label}</span>
+                <span className={`hover:bg-green-500 rounded-lg px-2 py-2`}>{time.label}</span>
               </div>
             ))}
-            {/* <div className="flex items-center gap-2 font-medium leading-none">
-                Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-              </div>
-              <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                January - June 2024
-              </div> */}
           </div>
         </CardFooter>
       </Card>

@@ -13,7 +13,7 @@ import ChartView from '@/components/chart-view'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Expand, Heart, X } from 'lucide-react'
-import { companyInfo, description, growthMetrics } from '@/constants'
+import { companyInfo, description, growthMetrics, timeFrames } from '@/constants'
 import { useParams } from 'next/navigation'
 import { useFetchStock, useStockSearch } from '@/hooks/fetchStockDetails'
 import { useTheme } from 'next-themes'
@@ -34,6 +34,7 @@ const StockDetails = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { favorites, saveStock, removeStock } = useLocalStorage();
+  const [timeSelected, setTimeSelected] = useState(timeFrames[0]);
 
   const handleStockDataChange = (data) => {
     setData(data);
@@ -114,11 +115,11 @@ const StockDetails = () => {
                 </Button>
               </DialogTrigger>
               <DialogContent>
-                <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock} />
+                <ChartView timeSelected={timeSelected} setTimeSelected={setTimeSelected}  key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock} />
               </DialogContent>
             </Dialog>
           </div>
-          <ChartView key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock}/>
+          <ChartView timeSelected={timeSelected} setTimeSelected={setTimeSelected} key={stock} data={data} loading={loading} handleStockDataChange={handleStockDataChange} stock={stock}/>
         </aside>
         <article className={`${theme == "light" ? "text-black bg-white" : "text-white bg-black"} w-3/4 max-lg:w-full rounded-xl p-4`}>
           <h1 className='font-bold mb-4'>Company Info</h1>
